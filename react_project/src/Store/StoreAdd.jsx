@@ -7,16 +7,31 @@ export class StoreAdd extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            sc_index : ["상의" , "하의"],
+            sc_index : 0,
             sp_name : "",
             sp_summary : "",
             sp_price : 0,
             sp_thumbnail : "",
             sp_thumbnailName : "",
+            categoryList : [],
         }
         this.ChangHandle = this.ChangHandle.bind(this);
         this.FileChange = this.FileChange.bind(this);
         this.onSubmit =this.onSubmit.bind(this);
+    }
+
+    componentDidMount(){
+
+        axios.post("/api/categoryList")
+        .then((response) => {
+            if(response.data.code === 200){
+                this.setState({
+                    categoryList : response.data.content,
+                });
+            }
+       })
+        .catch((error) => {console.log(error)});
+
     }
 
     ChangHandle(e){
@@ -92,7 +107,6 @@ export class StoreAdd extends React.Component{
 
                     axios.post("/api/storeInsert" , formData)
                         .then((response) => {if(response.data.code === 200){
-                            console.log("test");
                             alert("등록 성공!");
                             window.location.reload();
                         }});
@@ -118,7 +132,11 @@ export class StoreAdd extends React.Component{
        return (<>
             <h4>상품등록페이지</h4>
             <form onSubmit={this.onSubmit}>
-            상품카테고리 : <Tag tagType={"select"} name={"sc_index"} option={this.state.sc_index} onChange={this.ChangHandle}></Tag><br/>
+            상품카테고리 : <select name={"sc_index"} onChange={this.ChangHandle}>
+                            {this.state.categoryList.map((data , index) => {
+                                return (<option key={data.sc_index} value={data.sc_index}>{data.sc_categoryName}</option>)
+                            })}
+                        </select><br/>
             상품이름 : <Tag tagType ={"input"} type={"text"} name={"sp_name"} placeholder={"상품이름을 입력해주세요"} onChange={this.ChangHandle}></Tag><br/>
             상품요약 : <Tag tagType ={"input"} type={"text"} name={"sp_summary"} placeholder={"상품요약을 입력해주세요"} onChange={this.ChangHandle}></Tag><br/>
             상품가격 : <Tag tagType ={"input"} type={"text"} name={"sp_price"} placeholder={"상품 가격을 입력해주세요"} onChange={this.ChangHandle}></Tag><br/>

@@ -3,9 +3,6 @@ import axios from "axios";
 import { Tag } from "../Tag/DataTag";
 import "./store.css";
 
-
-const categoryName = { 1 : "상의" , 2 : "하의"};
-
 function params(id){
     return new URLSearchParams(window.location.search).get(id);
 }
@@ -29,13 +26,28 @@ function ProductList(){
     return ProductList;
 }
 
-const StoreList = () => {
+function CatgoryList(){
+    const[categoryList , setcategoryList] = useState([]);
 
+    useEffect(() => {
+
+        axios.post("/api/categoryList")
+        .then((response) => {setcategoryList(response.data.content)})
+        .catch((error) => {console.log(error)});
+
+    } , []);
+
+    return categoryList;
+}
+
+
+const StoreList = () => {
+        const categoryList = CatgoryList();
         const storeList = ProductList();
         const id = params("categoryID");
 
         return (<>
-            <h4>상품 {categoryName[id]} 페이지</h4>
+            <h4>상품 {categoryList.map((data , index) => { if(data.sc_index == id ){ return (data.sc_categoryName)}})} 페이지</h4>
             <table>
                 <tbody>
                     <tr>
@@ -55,22 +67,6 @@ const StoreList = () => {
                             <td>{data.sp_price}</td>
                             <td><img src={"/Resorces/Store/" + data.sp_thumbnail}></img></td>
                             <td>{data.sp_visit}</td>
-                            <td><button type={"button"} onClick={() => { 
-
-                                    var formData = new FormData();
-                                    formData.append("id" , data.sp_index);
-
-                                    axios.post("/api/storeDelete" , formData)
-                                    .then((response) => {
-                                        if(response.data.code === 200){
-                                            console.log(response.data.content);
-                                            window.location.reload();
-                                        }else{
-                                            console.log(response.data.content);
-                                        }
-                                    });
-
-                                }}>삭제</button></td>
                         </tr>
                         );
                     })}

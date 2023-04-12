@@ -92,7 +92,6 @@
         db.query("INSERT INTO store_product (sc_index , sp_name , sp_summary , sp_price , sp_thumbnail) VALUES ( ? , ? , ? , ? , ?);" , [sc_index,sp_name,sp_summary,sp_price,sp_thumbnail] , (err,data) => {
             if(err){
                 response.send(err);
-                console.log(err);
             }else{
                 response.status(200).send({message : "등록 성공" , code : 200});
             }
@@ -141,6 +140,7 @@
 
     app.post("/api/storeDelete" , (request , response) => {
         const id = request.body.id;
+        console.log(id);
         db.query("UPDATE store_product SET sp_able = 0 WHERE sp_index = ? " , [id] , (err , data) => {
             if(err){
                 response.status(500).send({messgae : "삭제 오류 발생" , code : 500 , content : err});
@@ -163,7 +163,7 @@
 
     app.post("/api/updateStoreList" , (request , response) => {
         const categoryID = request.body.categoryID;
-        db.query("SELECT * FROM store_product WHERE sc_index = ? " , [categoryID] , (err, data) => {
+        db.query("SELECT * FROM store_product WHERE sc_index = ? AND sp_able = 1 " , [categoryID] , (err, data) => {
             if(err){
                 response.status(500).send({message : "상품 조회 실패" , code :500 , content : err});
             }else{

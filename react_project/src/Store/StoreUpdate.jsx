@@ -3,9 +3,6 @@ import "../Store/store.css";
 import { Tag } from "../Tag/DataTag";
 import axios from "axios";
 
-const categoryStatus = { 1 : "상의" , 2 : "하의"}
-
-
 export class StoreUpdate extends React.Component{
     constructor(props){
         super(props)
@@ -63,6 +60,7 @@ export class StoreUpdate extends React.Component{
 
 
     render(){
+        var categoryName = "";
         return<>
             <h4>상품 수정 페이지</h4>
             <select name={"categoryID"} onChange={this.OnChage}>
@@ -87,13 +85,29 @@ export class StoreUpdate extends React.Component{
                     {this.state.StoreList.map((data , index) => {
                         return (
                             <tr key={data.sp_index}>
-                                <td>{categoryStatus[data.sc_index]}</td>
+                                <td>{this.state.categoryList.map(( categoryData , categoryIndex) => { if(categoryData.sc_index === data.sc_index){ return categoryData.sc_categoryName}})}</td>
                                 <td>{data.sp_index}</td>
                                 <td onClick={((e) => { window.location.href = "./storeupdatedetail?id=" + data.sp_index})}>{data.sp_name}</td>
                                 <td>{data.sp_summary}</td>
                                 <td>{data.sp_price}</td>
                                 <td><img src={"/Resorces/Store/"  + data.sp_thumbnail}></img></td>
                                 <td>{data.sp_visit}</td>
+                                <td><button type={"button"} onClick={() => { 
+
+                                    var formData = new FormData();
+                                    formData.append("id" , data.sp_index);
+
+                                    axios.post("/api/storeDelete" , formData)
+                                    .then((response) => {
+                                        if(response.data.code === 200){
+                                            console.log(response.data);
+                                            window.location.reload();
+                                        }else{
+                                            console.log(response.data);
+                                        }
+                                    });
+
+                                }}>삭제</button></td>
                             </tr>
                         )
                     })}
