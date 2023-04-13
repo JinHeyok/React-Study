@@ -1,53 +1,55 @@
-import React , {useEffect, useState}  from "react";
+import React  from "react";
 import axios from "axios";
-import { Tag } from "../Tag/DataTag";
 import "./store.css";
 
 function params(id){
     return new URLSearchParams(window.location.search).get(id);
 }
 
+export class StoreList extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            storeList : [],
+            categoryList : [],
+            categoryID : params("categoryID"),
+        }
+    }
+    
+    componentDidMount(){
+        console.log("componentDidMount");
 
-function ProductList(){
-
-    const [ProductList , setProductList] = useState([]);
-
-    useEffect(() => {
-        const id = params("categoryID");
+        const id = this.state.categoryID;
 
         var formData = new FormData();
         formData.append("categoryID" , id);
         
         axios.post("/api/storeList", formData)
-        .then((response) => {setProductList(response.data.list)});
-
-    } , []);
-        
-    return ProductList;
-}
-
-function CatgoryList(){
-    const[categoryList , setcategoryList] = useState([]);
-
-    useEffect(() => {
+        .then((response) => {
+            if(response.data.code === 200){
+                console.log(response.data);
+                this.setState({
+                    storeList : response.data.list
+                });
+            }
+        })
+        .catch((error) => {console.log(error)})
 
         axios.post("/api/categoryList")
-        .then((response) => {setcategoryList(response.data.content)})
+        .then((response) => {
+            if(response.data.code === 200){
+                this.setState({
+                    categoryList : response.data.content
+                });
+            }
+        })
         .catch((error) => {console.log(error)});
 
-    } , []);
+    }
 
-    return categoryList;
-}
-
-
-const StoreList = () => {
-        const categoryList = CatgoryList();
-        const storeList = ProductList();
-        const id = params("categoryID");
-
+    render(){
         return (<>
-            <h4>상품 {categoryList.map((data , index) => { if(data.sc_index == id ){ return (data.sc_categoryName)}})} 페이지</h4>
+            <h4>상품 {this.state.categoryList.map((data , index) => { if(data.sc_index == this.state.categoryID ){ return (data.sc_categoryName)}})} 페이지</h4>
             <table>
                 <tbody>
                     <tr>
@@ -58,7 +60,7 @@ const StoreList = () => {
                         <th>상품이미지</th>
                         <th>방문수</th>
                     </tr>
-                    {storeList.map((data , index) => {
+                    {this.state.storeList.map((data , index) => {
                         return (
                         <tr key={data.sp_index}>
                             <td>{data.sp_index}</td>
@@ -75,6 +77,9 @@ const StoreList = () => {
             </table>
             </>
             )
-}   
+    }
+    
+}
+
 
 export default StoreList;

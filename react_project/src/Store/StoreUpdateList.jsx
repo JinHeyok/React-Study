@@ -1,13 +1,22 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import React from "react";
 import "../Store/store.css";
-import { Tag } from "../Tag/DataTag";
 import axios from "axios";
+
+
 
 export class StoreUpdate extends React.Component{
     constructor(props){
         super(props)
+        
+        var idCheck = sessionStorage.getItem("user");
+
+        if(idCheck === "user"){
+            window.location.replace("/");
+        }
+
+        var id = new URLSearchParams(window.location.search).get("categoryID");        
         this.state = {
-            categoryID : "1",
+            categoryID : id === null ? 1 : id,
             categoryList : [],
             StoreList : [],
         }
@@ -16,8 +25,6 @@ export class StoreUpdate extends React.Component{
     }
 
     componentDidMount(){
-
-        console.log("렌더링");
 
         var formData = new FormData();
 
@@ -60,10 +67,9 @@ export class StoreUpdate extends React.Component{
 
 
     render(){
-        var categoryName = "";
         return<>
             <h4>상품 수정 페이지</h4>
-            <select name={"categoryID"} onChange={this.OnChage}>
+            <select value={this.state.categoryID} name={"categoryID"} onChange={this.OnChage}>
                 {this.state.categoryList.map((data , index) => { 
                     return (<option key={data.sc_index} value={data.sc_index}>{data.sc_categoryName}</option>)
                 })}

@@ -15,7 +15,11 @@
     //요청 데이터를 받기위한 
     app.use(bodyParser.urlencoded({extended : false}));
     app.use(cors());
-    app.use(fileUpload());
+    //파일 업로드 한글 설정
+    app.use(fileUpload({
+        defCharset :"utf8",
+        defParamCharset :"utf8"
+    }));
     app.use(express.static("files"));
     app.use(bodyParser.json());//요청온 데이터를 JSON 으로변형 
     
@@ -42,7 +46,7 @@
         const id = req.body.id;
         const pw = req.body.pw;
 
-        db.query("SELECT su_id AS id , COUNT(*) as count FROM store_user WHERE su_id = ? AND su_pw = ? " ,  [id ,pw] , (err , data) => {
+        db.query("SELECT su_id AS id  , su_permission AS permission, COUNT(*) as count FROM store_user WHERE su_id = ? AND su_pw = ? " ,  [id ,pw] , (err , data) => {
             if(err){
                 res.send(err);
             }else{
@@ -70,7 +74,7 @@
     app.post("/api/fileUpload" , (reqesut, response) => {
         let filePath = __dirname + "/public/Resorces/Store/";
         let file = reqesut.files.file;
-        let fileName = file.name;
+        let fileName = reqesut.body.fileName;
 
         file.mv(filePath+fileName, (err) => {
             if(err){
@@ -89,7 +93,7 @@
         const sp_price = requset.body.sp_price;
         const sp_thumbnail = requset.body.sp_thumbnail;
 
-        db.query("INSERT INTO store_product (sc_index , sp_name , sp_summary , sp_price , sp_thumbnail) VALUES ( ? , ? , ? , ? , ?);" , [sc_index,sp_name,sp_summary,sp_price,sp_thumbnail] , (err,data) => {
+        db.query("INSERT INTO store_product (sc_index , sp_name , sp_summary , sp_price , sp_thumbnail , sp_able ) VALUES ( ? , ? , ? , ? , ? , 1);" , [sc_index,sp_name,sp_summary,sp_price,sp_thumbnail] , (err,data) => {
             if(err){
                 response.send(err);
             }else{
@@ -165,7 +169,7 @@
         const categoryID = request.body.categoryID;
         db.query("SELECT * FROM store_product WHERE sc_index = ? AND sp_able = 1 " , [categoryID] , (err, data) => {
             if(err){
-                response.status(500).send({message : "상품 조회 실패" , code :500 , content : err});
+                response.status(500).send({message : "상품 조회 실패" , code : 500 , content : err});
             }else{
                 response.status(200).send({message : "success" , code : 200 , content : data});
             }

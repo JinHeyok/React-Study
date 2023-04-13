@@ -12,7 +12,7 @@ import MemberInsert  from './Member/MemberInsert';
 import StoreDetail from './Store/StoreDetail';
 import StoreAdd from './Store/StoreAdd';
 import StoreList from './Store/StoreList';
-import StoreUpdate from './Store/StoreUpdate';
+import StoreUpdate from './Store/StoreUpdateList';
 import StroeUpdateDetail from "./Store/StoreUpdateDetail"; 
 import MyComponent from "./Test";
 
@@ -23,6 +23,7 @@ var idCheck = sessionStorage.getItem("user");
 var option = {
     path : "",
     text : "",
+    user :idCheck,
 }
 
 if(idCheck === null || idCheck === undefined || idCheck === ""){
@@ -49,8 +50,6 @@ root.render(
         <Route path='/store/storeupdate' element={<StoreUpdate />}></Route>
         <Route path='/store/storedetail' element={<StoreDetail />}></Route>
         <Route path='/store/storeupdatedetail' element={<StroeUpdateDetail />}></Route>
-
-
         <Route path='/test' element={<MyComponent />}></Route>
       </Routes>
     </BrowserRouter>

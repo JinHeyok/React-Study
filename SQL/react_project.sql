@@ -33,3 +33,8 @@ CREATE TABLE store_product(
 );
 
 
+INSERT INTO store_category VALUES (1 , "상의");
+INSERT INTO store_category VALUES (2 , "하의");
+INSERT INTO store_category VALUES (3 , '액세사리');
+INSERT INTO store_category VALUES (4 , '아우터');
+INSERT INTO store_category VAlUES (5, '스니커즈');

@@ -1,11 +1,20 @@
 import React from "react";
-import {Tag} from "../Tag/DataTag";
+import {Tag} from "../Common/DataTag";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import { redirect } from "react-router";
 
 
 export class StoreAdd extends React.Component{
     constructor(props){
         super(props)
+
+        var idCheck = sessionStorage.getItem("user");
+
+        if(idCheck === "user"){
+            window.location.replace("/");
+        }
+        
         this.state = {
             sc_index : 0,
             sp_name : "",
@@ -46,7 +55,8 @@ export class StoreAdd extends React.Component{
 
     FileChange(e){
         const file = e.target.files[0];
-        const fileName = e.target.files[0].name;
+        const extension = file.name.split(".").pop();
+        const fileName = uuidv4() + '.' + extension;
         
         this.setState({
             sp_thumbnail : file,

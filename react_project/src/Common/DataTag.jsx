@@ -40,7 +40,7 @@ export class Tag extends React.Component{
             )
         }else if(tagType === "textarea"){
             return(
-                <textarea name={name}></textarea>
+                <textarea name={name} className={classText}></textarea>
             )
         }else if(tagType === "select"){
             return(

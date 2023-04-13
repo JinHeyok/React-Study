@@ -1,5 +1,5 @@
 import React  from "react";
-import {Tag} from "../Tag/DataTag";
+import {Tag} from "../Common/DataTag";
 import { Link } from "react-router-dom";
 
 

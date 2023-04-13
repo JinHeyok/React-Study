@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Tag } from "../Tag/DataTag";
+import { Tag } from "../Common/DataTag";
 
 export class Login extends React.Component{
     constructor(props){
@@ -54,7 +54,8 @@ export class Login extends React.Component{
                         alert("존재하지 않는 계정입니다.");
                         return (false);
                     }else{
-                        sessionStorage.setItem("user" , user.id);
+                        sessionStorage.setItem("user" , user.permission);
+                        console.log(user);
                         window.location.href = "/store";
                         return (true);
                     }

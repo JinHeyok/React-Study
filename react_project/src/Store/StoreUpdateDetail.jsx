@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import {Tag} from "../Tag/DataTag";
-
+import React from "react";
+import {Tag} from "../Common/DataTag";
+import {v4 as uuidv4} from 'uuid';
 
 const Param = (id) => {
     return new URLSearchParams(window.location.search).get(id);
@@ -11,6 +11,13 @@ export class Detail extends React.Component{
 
     constructor(props){
         super(props);
+        
+        var idCheck = sessionStorage.getItem("user");
+        
+        if(idCheck === "user"){
+            window.location.replace("/");
+        }
+
         this.state = {
             categoryID : Param("id"),
             categoryList : [],
@@ -25,7 +32,7 @@ export class Detail extends React.Component{
     
         this.OnChangeHandle = this.OnChangeHandle.bind(this);
         this.OnSubmit = this.OnSubmit.bind(this);
-        this.OnChageFile = this. OnChageFile.bind(this);
+        this.OnChageFile = this.OnChageFile.bind(this);
     }
 
     componentDidMount(){
@@ -64,12 +71,13 @@ export class Detail extends React.Component{
 
     OnChageFile(e){
         const file = e.target.files[0];
-        
+        const extension = file.name.split(".").pop();
+        const fileName = uuidv4() + '.' + extension;
+
         this.setState({
             sp_thumbnail : file,
-            sp_thumbnailName : file.name
-        })
-
+            sp_thumbnailName : fileName,
+        });
     }
 
     OnSubmit(e){
@@ -82,12 +90,11 @@ export class Detail extends React.Component{
         const sp_thumbnailName = this.state.sp_thumbnailName;
 
         var formData = new FormData();
-        console.log(sp_thumbnail);
-
         if(sp_thumbnail !== ""){
 
             formData.append("file" ,sp_thumbnail);
-            
+            formData.append("fileName" , sp_thumbnailName);
+
             axios.post("/api/fileUpload" , formData)
             .then((response) => {
                 if(response.data.code === 200){
@@ -111,8 +118,8 @@ export class Detail extends React.Component{
         .then((response) => {
             const data = response.data;
             if(data.code === 200 && data.status === "success"){
-                alert("수정 성공!");
-                window.location.reload();
+            alert("수정 성공!");
+            window.location.href = "/store/storeupdate?categoryID=" + this.state.sc_index;
             }else{
                 console.error(data.content);
             }
@@ -143,7 +150,7 @@ export class Detail extends React.Component{
                     <span>파일이름 : {this.state.sp_thumbnailName}</span>
                 </label><br/>
                 <Tag tagType={"button"} type={"submit"} text={"수정"}></Tag>&nbsp;
-                <button type="button" onClick={(e) => {window.location.href="/store/storeupdate"}}>돌아가기</button>
+                <button type="button" onClick={(e) => {window.location.href="/store/storeupdate?categoryID=" + this.state.sc_index}}>돌아가기</button>
         </form>
     </>);
     }

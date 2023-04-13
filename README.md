@@ -21,3 +21,6 @@
 - 간단한 로그인 로그아웃 구현
 - 상품 등록, 상품 수정, 상품 삭제 구현
 - 상품 수정 페이지 - select box 구분으로 해당 데이터 출력
+- User, Admin 권한별로 Header 구성
+- FileUpload 시 UUID 변환 작업 구성
+
