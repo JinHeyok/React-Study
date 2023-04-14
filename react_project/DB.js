@@ -1,10 +1,13 @@
     const express = require('express');
     const fileUpload = require('express-fileupload');
+    const multer = require("multer");
+    const path = require("path");
     const bodyParser = require('body-parser');
     const app = express();
     const port = 4000;
     const cors = require("cors");
     const mysql = require("mysql");
+const { Router } = require('react-router');
     const db = mysql.createPool({
         host : "localhost",
         user : "root",
@@ -75,6 +78,7 @@
         let filePath = __dirname + "/public/Resorces/Store/";
         let file = reqesut.files.file;
         let fileName = reqesut.body.fileName;
+        console.log("fileUpload");
 
         file.mv(filePath+fileName, (err) => {
             if(err){
@@ -85,6 +89,25 @@
         });
     });
 
+
+    app.post("/api/multiFileUpload" , (request , response) => {
+        let filePath = __dirname + "/public/Resorces/Store/";
+        var file = request.files.file;
+        var fileName = request.body.fileName;
+        if(typeof file === "object"){
+            file.forEach((data , index) => {
+                data.mv(filePath+fileName[index] , (err) => {
+                    console.log(index);
+                });
+            });
+        }else{
+            file.mv(filePath+file , (err) =>{
+                console.log("단일");
+            });
+        }
+    });
+    
+    
     app.post("/api/storeInsert" , (requset , response) => {
         console.log(requset);
         const sc_index = requset.body.sc_index;
@@ -183,9 +206,10 @@
         const sp_summary = request.body.sp_summary;
         const sp_price = request.body.sp_price;
         const sp_thumbnail = request.body.sp_thumbnail;
+        const sp_image = request.body.sp_image;
 
-        db.query("UPDATE store_product SET sc_index = ? , sp_name = ? , sp_summary = ? , sp_price = ? , sp_thumbnail = ? " +
-        "WHERE sp_index = ? " , [sc_index , sp_name , sp_summary, sp_price ,sp_thumbnail , sp_index] , (err , data) => {
+        db.query("UPDATE store_product SET sc_index = ? , sp_name = ? , sp_summary = ? , sp_price = ? , sp_thumbnail = ? , sp_image = ? " +
+        "WHERE sp_index = ? " , [sc_index , sp_name , sp_summary, sp_price ,sp_thumbnail  , sp_image, sp_index] , (err , data) => {
             if(err){
                 response.status(500).send({message : "수정 실패" , code : 500 , content : err});
             }else{

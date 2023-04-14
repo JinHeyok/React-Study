@@ -1,5 +1,5 @@
 import React from "react";
-import "../Store/store.css";
+import "../CSS/store.css";
 import axios from "axios";
 
 

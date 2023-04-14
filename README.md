@@ -23,4 +23,5 @@
 - 상품 수정 페이지 - select box 구분으로 해당 데이터 출력
 - User, Admin 권한별로 Header 구성
 - FileUpload 시 UUID 변환 작업 구성
+- ImageList INSERT , UPDATE 구현 (업로드 시 삭제 리스트 오류 수정필요)
 

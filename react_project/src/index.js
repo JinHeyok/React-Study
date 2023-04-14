@@ -16,6 +16,8 @@ import StoreUpdate from './Store/StoreUpdateList';
 import StroeUpdateDetail from "./Store/StoreUpdateDetail"; 
 import MyComponent from "./Test";
 
+import "./CSS/style.css";
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 var idCheck = sessionStorage.getItem("user");
@@ -33,9 +35,9 @@ if(idCheck === null || idCheck === undefined || idCheck === ""){
     option.path = "/logout";
     option.text = "로그아웃 하기";
 }
-
 root.render(
   // <React.StrictMode>
+  <div className={"header"}>
     <BrowserRouter>
     <Headers option={option}/>
       <Routes>
@@ -53,6 +55,7 @@ root.render(
         <Route path='/test' element={<MyComponent />}></Route>
       </Routes>
     </BrowserRouter>
+  </div>
   // </React.StrictMode> 
 );
 

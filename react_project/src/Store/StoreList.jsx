@@ -1,6 +1,6 @@
 import React  from "react";
 import axios from "axios";
-import "./store.css";
+import "./../CSS/store.css";
 
 function params(id){
     return new URLSearchParams(window.location.search).get(id);
