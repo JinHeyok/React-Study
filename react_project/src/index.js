@@ -30,10 +30,10 @@ var option = {
 
 if(idCheck === null || idCheck === undefined || idCheck === ""){
     option.path = "/login";
-    option.text = "로그인 하기";
+    option.text = "로그인";
 }else{
     option.path = "/logout";
-    option.text = "로그아웃 하기";
+    option.text = "로그아웃";
 }
 root.render(
   // <React.StrictMode>
