@@ -115,8 +115,9 @@ const { Router } = require('react-router');
         const sp_summary = requset.body.sp_summary;
         const sp_price = requset.body.sp_price;
         const sp_thumbnail = requset.body.sp_thumbnail;
+        const sp_image = requset.body.sp_image; 
 
-        db.query("INSERT INTO store_product (sc_index , sp_name , sp_summary , sp_price , sp_thumbnail , sp_able ) VALUES ( ? , ? , ? , ? , ? , 1);" , [sc_index,sp_name,sp_summary,sp_price,sp_thumbnail] , (err,data) => {
+        db.query("INSERT INTO store_product (sc_index , sp_name , sp_summary , sp_price , sp_image , sp_thumbnail , sp_able ) VALUES ( ? , ? , ?, ? , ? , ? , 1);" , [sc_index,sp_name,sp_summary,sp_price,sp_image,sp_thumbnail] , (err,data) => {
             if(err){
                 response.send(err);
             }else{

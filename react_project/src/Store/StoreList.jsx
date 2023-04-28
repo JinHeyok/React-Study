@@ -1,6 +1,7 @@
 import React  from "react";
 import axios from "axios";
 import "./../CSS/store.css";
+import Store from "./Store";
 
 function params(id){
     return new URLSearchParams(window.location.search).get(id);
@@ -63,7 +64,7 @@ export class StoreList extends React.Component{
                     {this.state.storeList.map((data , index) => {
                         return (
                         <tr key={data.sp_index}>
-                            <td>{data.sp_index}</td>
+                            <td>{index + 1}</td>
                             <td onClick={((e) => { window.location.href="./storedetail?id=" + data.sp_index })}>{data.sp_name}</td>
                             <td>{data.sp_summary}</td>
                             <td>{data.sp_price}</td>

@@ -34,13 +34,13 @@ export class Store extends React.Component{
             <div className={"desc_wrap"}>
               <p>스토어 화면입니다.</p>
             </div>
-            {this.state.categoryList.map((data , index) => {
-            return (<>
-                <div className={"subGnb"}>
-                <Link to={"/store/storelist?categoryID=" + data.sc_index } className={"active"}>{data.sc_categoryName}</Link>&nbsp;
-                </div>
-            </>);
-        })}
+            <div className={"subGnb"}>
+                {this.state.categoryList.map((data , index) => {
+                return (<>
+                    <Link to={"/store/storelist?categoryID=" + data.sc_index } className={"active"}>{data.sc_categoryName}</Link>&nbsp;
+                </>);
+                })}
+            </div>
             </>
         );
     }

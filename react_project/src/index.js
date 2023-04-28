@@ -17,6 +17,7 @@ import StroeUpdateDetail from "./Store/StoreUpdateDetail";
 import MyComponent from "./Test";
 
 import "./CSS/style.css";
+import "./CSS/xeicon/xeicon.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
